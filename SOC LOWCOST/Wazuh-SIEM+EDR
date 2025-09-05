@@ -1,0 +1,127 @@
+🚀 Step-by-Step: Install Wazuh on Ubuntu 24
+1. Update System
+sudo apt update && sudo apt upgrade -y
+
+2. Install Required Packages
+sudo apt install curl apt-transport-https unzip wget gnupg -y
+
+3. Download Wazuh Installation Script
+
+Wazuh provides an automated script:
+
+curl -sO https://packages.wazuh.com/4.9/wazuh-install.sh
+
+
+(Change 4.9 to the latest stable version if newer is available.)
+
+4. Run the Installer (All-in-One)
+sudo bash wazuh-install.sh -a
+
+
+Options:
+
+-a → All-in-one (Manager + Indexer + Dashboard).
+
+-m → Manager only.
+
+-i → Indexer only.
+
+-d → Dashboard only.
+
+5. Access the Wazuh Dashboard
+
+After install, get the admin password:
+
+sudo cat /var/ossec/api/configuration/auth/user-auth.json | jq -r '.[] | select(.username=="admin") | .password'
+
+
+Open in browser:
+
+https://<your-server-ip>
+
+
+Username: admin
+
+Password: (from above command)
+
+6. Install Wazuh Agent (on endpoints)
+
+On another Ubuntu machine (the endpoint):
+
+curl -sO https://packages.wazuh.com/4.9/wazuh-agent-4.9.0.deb
+sudo dpkg -i ./wazuh-agent-4.9.0.deb
+
+
+Configure agent to point to your Wazuh Manager:
+
+sudo nano /var/ossec/etc/ossec.conf
+
+
+Find:
+
+<server>
+  <address>MANAGER_IP</address>
+</server>
+
+
+Then restart the agent:
+
+sudo systemctl enable wazuh-agent
+sudo systemctl start wazuh-agent
+
+
+✅ Now you have a running Wazuh SIEM + EDR system on Ubuntu 24.
+
+Would you like me to also create a diagram of the Wazuh all-in-one architecture (Manager + Indexer + Dashboard + Agent) so it’s clearer how the components connect?
+
+Anda bilang:
+yes
+ChatGPT bilang:
+Bagikan
+Anda bilang:
+hardware recomended
+ChatGPT bilang:
+
+Untuk menjalankan Wazuh (versi terbaru, misalnya 4.9) di Ubuntu 24, kebutuhan hardware sangat bergantung pada skala deployment (berapa banyak agent/log yang dipantau). Berikut rekomendasi resmi dari Wazuh:
+
+🔹 Minimum Requirement (Testing / Lab kecil)
+
+CPU: 2 vCPU
+
+RAM: 4 GB
+
+Disk: 50 GB (SSD lebih baik)
+
+OS: Ubuntu 22.04/24.04 (x86_64)
+
+Cocok untuk lab pribadi, uji coba, atau < 10 agent.
+
+🔹 Small Deployment (hingga ±100 agent)
+
+CPU: 4 vCPU
+
+RAM: 8 GB
+
+Disk: 100 GB SSD
+
+Network: 1 Gbps
+
+🔹 Medium Deployment (100 – 500 agent)
+
+CPU: 8 vCPU
+
+RAM: 16 – 24 GB
+
+Disk: 250 GB SSD / NVMe
+
+Network: 1 Gbps
+
+🔹 Large Deployment (500 – 1000+ agent, SOC production)
+
+CPU: 16 – 32 vCPU
+
+RAM: 32 – 64 GB
+
+Disk: 500 GB – 1 TB (SSD / NVMe, RAID disarankan)
+
+Network: 10 Gbps (untuk beban besar / cluster)
