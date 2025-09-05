@@ -1,8 +1,5 @@
-Got it 👍. You want to install ELK Stack (Elasticsearch, Logstash, Kibana) with Elastic Security (SIEM) on Ubuntu 24.04.
-
-Here’s a clean step-by-step guide:
-
-1. Update System
+# You want to install ELK Stack (Elasticsearch, Logstash, Kibana) with Elastic Security (SIEM) on Ubuntu 24.04.
+# 1. Update System
 sudo apt update && sudo apt upgrade -y
 
 2. Install Dependencies
