@@ -1,0 +1,104 @@
+🔹 Prerequisites
+
+Access to SentinelOne Management Console
+
+You need a valid account.
+
+From the console, you download the Linux agent package (.deb) and get the site token.
+
+System requirements (Ubuntu 24.04)
+
+Kernel supported (S1 Linux agent works with recent kernels, but check console release notes).
+
+Root or sudo access.
+
+No conflicting security software.
+
+🔹 Installation Steps
+1. Update your system
+sudo apt update && sudo apt upgrade -y
+
+2. Install required dependencies
+sudo apt install -y curl ca-certificates gnupg lsb-release
+
+3. Download the SentinelOne agent
+
+Log into your SentinelOne Management Console
+
+Go to: Settings → Downloads → Agents
+
+Select Linux → Ubuntu/Debian (.deb) and copy the download link.
+
+On your Ubuntu machine:
+
+wget https://<your-sentinelone-console-link>/linux/SentinelAgent_x.y.z.deb -O SentinelAgent.deb
+
+4. Install the package
+sudo dpkg -i SentinelAgent.deb
+sudo apt --fix-broken install -y
+
+5. Activate the agent
+
+Replace <SITE_TOKEN> with the token from your console.
+
+sudo /opt/sentinelone/bin/sentinelctl management token set <SITE_TOKEN>
+
+
+Then restart the agent:
+
+sudo systemctl restart sentinelone
+
+6. Verify installation
+
+Check agent status:
+
+/opt/sentinelone/bin/sentinelctl status
+
+
+You should see info about Connectivity, Protection, and Last Seen.
+
+🔹 Common Issues
+
+Kernel module not loading → Ensure linux-headers-$(uname -r) is installed.
+
+sudo apt install -y linux-headers-$(uname -r)
+
+
+Token invalid → Double-check you copied the site token from your console.
+
+Ubuntu 24 not listed → Sometimes agent release lags; you can use the Debian 12 package as it’s compatible.
+
+Do you want me to also make you a bash automation script for Ubuntu 24 SentinelOne installation (so you just run one script with your token)?
+
+Anda bilang:
+hardware recomen
+ChatGPT bilang:
+
+Good question 👍 — SentinelOne (S1) agent for Linux is pretty lightweight compared to full SIEM/EDR stacks, but hardware requirements still matter depending on whether you’re talking about:
+
+Endpoint (Agent on Ubuntu 24 host/server)
+
+Management Console (Cloud or On-Prem)
+
+Since your question is Ubuntu 24 + S1 install, I’ll assume you mean endpoint hardware requirements.
+
+🔹 Recommended Hardware for SentinelOne Linux Agent (Ubuntu 24)
+✅ Minimum
+
+CPU: 2 cores (x86_64 or ARM64 depending on package)
+
+RAM: 2 GB
+
+Disk: 2 GB free
+
+Network: Stable internet to SentinelOne cloud console
+
+✅ Recommended (for servers/workstations)
+
+CPU: 4 cores
+
+RAM: 4–8 GB
+
+Disk: 10 GB free (for logs, updates, quarantine storage)
+
+Kernel: Recent LTS (5.15+ is supported, Ubuntu 24 uses 6.8 by default which is compatible with new agent builds)
