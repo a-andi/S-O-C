@@ -33,7 +33,7 @@ sudo apt install curl apt-transport-https unzip wget gnupg -y
 
 # 3. Download Wazuh Installation Script
 #    Wazuh provides an automated script:
-curl -sO https://packages.wazuh.com/4.9/wazuh-install.sh
+curl -sO https://packages.wazuh.com/4.12/wazuh-install.sh
 # (Change 4.9 to the latest stable version if newer is available.)
 
 # 4. Run the Installer (All-in-One)
